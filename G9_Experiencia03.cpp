@@ -26,7 +26,17 @@ class RutaEntrega {
         }
 
         void ordenarPaquetes() {
-            sort(paquetes.begin(), paquetes.end());
+            for (size_t i = 0; i < paquetes.size() - 1; ++i) {
+                size_t minIndex = i;
+                for (size_t j = i + 1; j < paquetes.size(); ++j) {
+                    if (paquetes[j] < paquetes[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+                if (minIndex != i) {
+                    swap(paquetes[i], paquetes[minIndex]);
+                }
+            }
         }
 };
 
@@ -74,7 +84,6 @@ class SistemaGestionRutas {
 };
 
 int main() {
-    // Crear el sistema de gestión de rutas de entrega de tipo string
     SistemaGestionRutas<string> sistema;
 
     RutaEntrega<string> ruta1("Ciudad A");
@@ -94,7 +103,6 @@ int main() {
     sistema.ordenarRutas();
     sistema.imprimirRutas();
     
-    // Crear un recipiente de tipo int
     SistemaGestionRutas<int>::Recipiente<int> recipiente;
     
     recipiente.agregarElemento(10);
