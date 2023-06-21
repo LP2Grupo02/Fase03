@@ -1,10 +1,3 @@
-Crea una función en C++ llamada "divide" que acepte dos números enteros comoparámetros. 
-La función debe dividir el primer número por el segundo número y devolver elresultado. 
-Sin embargo, si el segundo número es igual a cero, 
-la función debe lanzar unaexcepción de tipo "std::runtime_error" con un mensaje indicando que no se puede dividir porcero. 
-Luego, en el programa principal, llama a la función "divide" con diferentes valores ymaneja las excepciones adecuadamente.
-
-
 #include <iostream>
 #include <stdexcept>
 
