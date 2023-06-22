@@ -66,3 +66,4 @@ int main() {
     cout << "Dirección: " << personaDeserializada.getDireccion() << endl; 
  
     return 0;
+}
