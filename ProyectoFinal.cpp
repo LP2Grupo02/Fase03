@@ -39,10 +39,6 @@ class Cliente : public Personas {
         string direccion;
 
         Cliente(string co = " ", string cd = " ", string nm = " ", string tl = " ", string _ruc = " ", string di = " ") : Personas(co, cd, nm, tl), ruc(_ruc), direccion(di) {
-            this->correo = co;
-            this->codigo = cd;
-            this->nombre = nm;
-            this->telefono = tl;
             this->ruc = _ruc;
             this->direccion = di;
         }
@@ -51,29 +47,31 @@ class Cliente : public Personas {
 class Clientesindividuales : public Cliente{
     public:
         string categoria;
-        Clientesindividuales(string co = "",  string cd = "", string nm = "", string tl = "", string _ruc = "", string di = "", string ct = "D") : Cliente(co, cd, nm, tl, _ruc, di), categoria(ct) { }
 
-        int tasadescuento2(string categoria,int monto) {
-            if (categoria == "D" and categoria == "C") {
+        Clientesindividuales(string co = "", string cd = "", string nm = "", string tl = "", string _ruc = "", string di = "", string ct = "D") : Cliente(co, cd, nm, tl, _ruc, di), categoria(ct) {}
+
+        int tasadescuento2(int monto) {
+            if (categoria == "D" || categoria == "C") {
                 cout << "Usted es un cliente de nivel bajo, no accede a descuento" << endl;
             }
-            else if (categoria == "A" and categoria == "B") {
+            else if (categoria == "A" || categoria == "B") {
                 cout << "Usted es un cliente de nivel alto, accede a descuento" << endl;
-                int predesc = monto - (monto * (3 / 100));
+                int predesc = monto - (monto * 3 / 100);
                 return predesc;
             }
             else {
-                cout << "Ingreso un dato erroneo" << endl;
+                cout << "Ingresó un dato erróneo" << endl;
             }
+            return 0;
         }
 };
 
 class Clientescorporativos : public Cliente{
     public:
-        Clientescorporativos(string co = "",  string cd = "", string nm = "", string tl = "", string _ruc = "", string di = "") : Cliente(co, cd, nm, tl, _ruc, di) { }
-        
+        Clientescorporativos(string co = "", string cd = "", string nm = "", string tl = "", string _ruc = "", string di = "") : Cliente(co, cd, nm, tl, _ruc, di) {}
+
         int tasadescuento2(int monto) {
-            int predesc = monto - (monto * (10 / 100));
+            int predesc = monto - (monto * 10 / 100);
             return predesc;
         }
 };
@@ -106,54 +104,115 @@ class Productos {
         }
 };
 
-void NuevosClientes () {
-    int op = 0;
-    while (op =! 3){
-        cout << "       MENU       " << endl;
-        cout << "1. Corporativo." << endl;
-        cout << "2. Individual." << endl;
-        cout << "3. SALIR." << endl;
-        cout << "Ingrese la opción que desea: " << endl;
-        cin >> op;
-        switch (op) {
-            case 1:
-                string correo;
-                for (int i = 0; i > len(correo); i++) {
-                    while ("@gmail.com"  correo) {
+void NuevosClientes() {
+    vector<Cliente> clientes;
+    Clientescorporativos cliente1("001", "Juan", "23541789302", "Av.Parra 425", "juan4855@gmail.com", "945733867");
+    Clientescorporativos cliente2("002", "Julieta", "56387030242", "Av.Parra 429", "julieta25@gmail.com", "946324113");
+    Clientesindividuales cliente3("003", "Manuel", "A", "89283572386", "Calle Melgar 123", "Manuel2985@gmail.com", "954872634");
+    clientes.push_back(cliente1);
+    clientes.push_back(cliente2);
+    clientes.push_back(cliente3);
 
+    string correo, codigo, nombre, telefono, ruc, direccion, categoria;
+
+    for (int i = 0; i > clientes.size(); i++) {
+        if (clientes[i].codigo == codigo || clientes[i].nombre == nombre) {
+            cout << "Ese cliente ya existe." << endl;
+        }
+        else {
+            if (clientes.size() >= 6) {
+                cout << "Agenda llena. No se permiten más clientes." << endl;
+                return;
+            } 
+            else {
+                while (nombre.empty()) {
+                    cout << "Ingrese el nombre del cliente: " << endl;
+                    getline(cin, nombre);
+                    if (nombre.empty()){
+                        cout << "Nombre inválido. Ingrese nuevamente: " << endl;
                     }
                 }
-                string codigo;
-                string nombre;
-                string telefono;
-                string categoria;
-                string ruc;
-                string direccion;
-                break;
 
-            case 2:
-                break;
+                bool hotmail = false;
+                bool gmail = false;
+                while (hotmail == false or gmail == false) {
+                    for (char c : correo) {
+                        if (c == '@hotmail.com') {
+                            hotmail = true;
+                        } else if (c == '@gmail.com') {
+                            gmail = true;
+                        }
+                    }
+                    if (hotmail == true or gmail == true) {
+                        cout << "Ingrese el correo electrónico del cliente: " << endl;
+                        getline(cin, correo);
+                    }
+                    else { cout << "Correo inválido. Ingrese nuevamente: " << endl; }
+                }
 
-            case 3:
-                cout << "Redirigiendo al sistema comercial...";
-                break;
+                while (telefono.length() != 9) {
+                    cout << "Ingrese el número de teléfono del cliente: " << endl;
+                    getline(cin, telefono);
+                    if (telefono.length() != 9) {
+                        cout << "Teléfono inválido. Ingrese nuevamente: " << endl;
+                    }
+                }
 
-            default:
-                break;
+                char tipoCliente;
+                while (tipoCliente != 'I' && tipoCliente != 'C') {
+                    cout << "¿El cliente es un cliente individual o corporativo? (I/C): " << endl;
+                    cin >> tipoCliente;
+                    cin.ignore();
+                    if (tipoCliente != 'I' && tipoCliente != 'C') {
+                        cout << "Opción incorrecta. Ingrese nuevamente: " << endl;
+                    }
+                }
+
+                if (tipoCliente == 'I') {
+                    while (ruc.length() != 11) {
+                        cout << "Ingrese el RUC del cliente: ";
+                        getline(cin, ruc);
+                        if (ruc.length() != 11) {
+                            cout << "RUC inválido. Debe tener 11 dígitos. Ingrese nuevamente: ";
+                        }
+                    }
+
+                    cout << "Ingrese la dirección del cliente: ";
+                    getline(cin, direccion);
+
+                    while (categoria != "A" && categoria != "B" && categoria != "C" && categoria != "D") {
+                        cout << "Ingrese la categoría del cliente (A/B/C/D): ";
+                        getline(cin, categoria);
+                        if (categoria != "A" && categoria != "B" && categoria != "C" && categoria != "D") {
+                            cout << "Categoría inválida. Ingrese nuevamente (A/B/C/D): ";
+                        }
+                    }
+
+                    Clientesindividuales nuevoCliente(ruc, direccion, nombre, telefono, ruc, direccion, categoria);
+                    clientes.push_back(nuevoCliente);
+                    cout << "Cliente individual agregado correctamente." << endl;
+                } else {
+                    while (ruc.length() != 11) {
+                        cout << "Ingrese el RUC del cliente: ";
+                        getline(cin, ruc);
+                        if (ruc.length() != 11) {
+                            cout << "RUC inválido. Debe tener 11 dígitos. Ingrese nuevamente: ";
+                        }
+                    }
+
+                    cout << "Ingrese la dirección del cliente: ";
+                    getline(cin, direccion);
+
+                    Clientescorporativos nuevoCliente(ruc, direccion, nombre, telefono, ruc, direccion);
+                    clientes.push_back(nuevoCliente);
+                    cout << "Cliente corporativo agregado correctamente." << endl;
+                }
+            }
         }
     }
 }
 
-int main()
-{
-    vector <Clientescorporativos> cliCopr;
-    vector <Clientesindividuales> cliIndi;
-    Clientescorporativos cliente1("001", "Juan", "23541789302", "Av.Parra 425", "juan4855@gmail.com", "945733867");
-    Clientescorporativos cliente2("002", "Julieta", "56387030242", "Av.Parra 429", "julieta25@gmail.com", "946324113");
-    Clientesindividuales cliente3("003", "Manuel", "A", "89283572386", "Calle Melgar 123", "Manuel2985@gmail.com", "954872634");
-    cliCopr.push_back(cliente1);
-    cliCopr.push_back(cliente2);
-    cliIndi.push_back(cliente3);
+void menu () {
     int opc = 0;
     while (opc != 8) {
         cout << "SISTEMA COMERCIAL" << endl;
@@ -165,35 +224,40 @@ int main()
         cout << "6. LISTA DE CLIENTES" << endl;
         cout << "7. LISTA DE VENDEDORES" << endl;
         cout << "8. SALIR" << endl;
-        cout << "Ingrese su opcion: ";
+        cout << "Ingrese su opcion: " ;
         cin >> opc;
         switch (opc) {
-        case 1:
-            cout << "Selecciono NUEVOS CLIENTES" << endl;
-            break;
-        case 2:
-            cout << "Selecciono BUSCAR CLIENTES" << endl;
-            break;
-        case 3:
-            cout << "Selecciono NUEVO VENDEDOR" << endl;
-            break;
-        case 4:
-            cout << "Selecciono NUEVO PRODUCTO" << endl;
-            break;
-        case 5:
-            cout << "Selecciono VENTAS" << endl;
-            break;
-        case 6:
-            cout << "Selecciono LISTA DE CLIENTES" << endl;
-            break;
-        case 7:
-            cout << "Selecciono LISTA DE VENDEDORES" << endl;
-            break;
-        case 8:
-            cout << "Saliendo del programa..." << endl;
-            break;
-        default:
-            cout << "ERROR" << endl;
+            case 1:
+                cout << "Selecciono NUEVOS CLIENTES" << endl;
+                NuevosClientes();
+                break;
+            case 2:
+                cout << "Selecciono BUSCAR CLIENTES" << endl;
+                break;
+            case 3:
+                cout << "Selecciono NUEVO VENDEDOR" << endl;
+                break;
+            case 4:
+                cout << "Selecciono NUEVO PRODUCTO" << endl;
+                break;
+            case 5:
+                cout << "Selecciono VENTAS" << endl;
+                break;
+            case 6:
+                cout << "Selecciono LISTA DE CLIENTES" << endl;
+                break;
+            case 7:
+                cout << "Selecciono LISTA DE VENDEDORES" << endl;
+                break;
+            case 8:
+                cout << "Saliendo del programa..." << endl;
+                break;
+            default:
+                cout << "ERROR" << endl;
         }
     }
+}
+
+int main () {
+    menu();
 }
