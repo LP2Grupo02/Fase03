@@ -76,13 +76,14 @@ class Clientescorporativos : public Cliente{
         }
 };
 
-class Vendedores : public Personas{
-    public:
+class Vendedores : public Personas {
+    protected:
         float salario;
-
-        Vendedores(string co = "", string cd = "", string nm = "", string tl = "", float sl = 0) : Personas(co, cd, nm, tl), salario(sl) {
-            this->salario = sl;
+    public:
+        Vendedores(string correo = " ", string codigo = " ", string nombre = " ", string telefono = " ", float salario = 0.0) : Personas(correo, codigo, nombre, telefono), salario(salario) {
+            this->salario = salario;
         }
+        friend void MostrarVendedores();
 };
 
 class Productos {
@@ -139,7 +140,8 @@ void NuevosClientes() {
                     
                     if (correo.find("@hotmail.com") != string::npos) {
                         hotmail = true;
-                    } else if (correo.find("@gmail.com") != string::npos) {
+                    } 
+                    else if (correo.find("@gmail.com") != string::npos) {
                         gmail = true;
                     }
 
@@ -186,7 +188,7 @@ void NuevosClientes() {
                         }
                     }
 
-                    Clientesindividuales nuevoCliente(ruc, direccion, nombre, telefono, ruc, direccion, categoria);
+                    Clientesindividuales nuevoCliente(correo, codigo, nombre, telefono, ruc, direccion, categoria);
                     clientes.push_back(nuevoCliente);
                     cout << "Cliente individual agregado correctamente." << endl;
                     break;
@@ -202,13 +204,100 @@ void NuevosClientes() {
                     cout << "Ingrese la dirección del cliente: ";
                     getline(cin, direccion);
 
-                    Clientescorporativos nuevoCliente(ruc, direccion, nombre, telefono, ruc, direccion);
+                    Clientescorporativos nuevoCliente(correo, codigo, nombre, telefono, ruc, direccion);
                     clientes.push_back(nuevoCliente);
                     cout << "Cliente corporativo agregado correctamente." << endl;
                     break;
                 }
             }
         }
+    }
+}
+
+void BuscarClientes () {
+
+}
+
+vector<Vendedores> vendedores;
+
+void AgregarVendedor () {
+    Vendedores vendedor1("auron@gmail.com","2023001","Auron","959697901",3800.0);
+    Vendedores vendedor2("reborn@hotmail.com","2023002","Reborn","959697902",1500.0);
+    Vendedores vendedor3("mariana@gmail.com","2023003","Mariana","959697903",1800.0);
+    Vendedores vendedor4("carola@gmail.com","2023004","Carola","959697904",2500.0);
+    Vendedores vendedor5("juan@hotmail.com","2023005","Juan","959697905",1300.0);
+    Vendedores vendedor6("sara@gmail.com","2023006","Sara","959697906",1500.0);
+    Vendedores vendedor7("osvaldo@gmail.com","2023007","Osvaldo","959697907",2800.0);
+    Vendedores vendedor8("raul@hotmail.com","2023008","Raul","959697908",1700.0);
+    Vendedores vendedor9("ocho@gmail.com","2023009","Ocho","959697909",1500.0);
+    Vendedores vendedor10("axoxxer@hotmail.com","2023010","Axoxer","959697910",1800.0);
+
+    vendedores.push_back(vendedor1);
+    vendedores.push_back(vendedor2);
+    vendedores.push_back(vendedor3);
+    vendedores.push_back(vendedor4);
+    vendedores.push_back(vendedor5);
+    vendedores.push_back(vendedor6);
+    vendedores.push_back(vendedor7);
+    vendedores.push_back(vendedor8);
+    vendedores.push_back(vendedor9);
+    vendedores.push_back(vendedor10);
+
+    string nombre = "abc", codigo, telefono = "123", correo = "abc";
+    double salario;
+
+    for (int i = 0; i < vendedores.size(); i++) {
+        if (vendedores[i].nombre == nombre) {
+            cout << "Ese Vendedor ya existe." << endl;
+        } else {
+            bool hotmail = false;
+            bool gmail = false;
+            while (!hotmail or !gmail) {
+                cout << "Ingrese el correo electrónico del cliente: " << endl;
+                getline(cin, correo);
+                
+                if (correo.find("@hotmail.com") != string::npos) {
+                    hotmail = true;
+                } 
+                else if (correo.find("@gmail.com") != string::npos) {
+                    gmail = true;
+                }
+
+                if (!hotmail or !gmail) {
+                    cout << "Correo inválido. Ingrese nuevamente: " << endl;
+                }  
+            }
+
+            cout << "Ingrese el codigo del vendedor: ";
+            cin >> codigo;
+
+            cout << "Ingrese el nombre del vendedor: ";
+            cin >> nombre;
+
+            while (telefono.length() != 9) {
+                cout << "Ingrese el número de teléfono del cliente: " << endl;
+                getline(cin, telefono);
+                if (telefono.length() != 9) {
+                    cout << "Teléfono inválido. Ingrese nuevamente: " << endl;
+                }
+            }
+
+            cout << "Ingrese el salario del vendedor: " << endl;
+            cin >> salario;
+
+            Vendedores nuevoVendedor(correo, codigo, nombre, telefono, salario);
+            vendedores.push_back(nuevoVendedor);
+            cout<<"VENDEDOR REGISTRADO CORRECTAMENTE!"<<endl;
+            break;
+        }
+    }
+}
+
+void MostrarVendedores() {
+    cout << "Lista de vendedores:" << endl;
+    for (Vendedores& vendedor : vendedores) {
+        cout << "Correo: " << vendedor.correo << ", Codigo: " << vendedor.codigo << ", Nombre: " << vendedor.nombre << ", Telefono: " << vendedor.telefono << ", Salario: " << vendedor.salario << endl;
+        cout << endl;
     }
 }
 
@@ -243,6 +332,7 @@ void menu () {
                 break;
             case 3:
                 cout << "Selecciono NUEVO VENDEDOR" << endl;
+                AgregarVendedor();
                 system("pause");
                 system("cls");
                 break;
@@ -263,6 +353,7 @@ void menu () {
                 break;
             case 7:
                 cout << "Selecciono LISTA DE VENDEDORES" << endl;
+                MostrarVendedores();
                 system("pause");
                 system("cls");
                 break;
