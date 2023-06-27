@@ -113,18 +113,16 @@ void NuevosClientes() {
     clientes.push_back(cliente2);
     clientes.push_back(cliente3);
 
-    string correo, codigo, nombre, telefono, ruc, direccion, categoria;
+    string correo = "xyz", codigo = "00", nombre, telefono = "123", ruc = "321", direccion, categoria = "Y";
 
-    for (int i = 0; i > clientes.size(); i++) {
-        if (clientes[i].codigo == codigo || clientes[i].nombre == nombre) {
+    for (int i = 0; i < clientes.size(); i++) {
+        if (clientes[i].codigo == codigo or clientes[i].nombre == nombre) {
             cout << "Ese cliente ya existe." << endl;
-        }
-        else {
+        } else {
             if (clientes.size() >= 6) {
                 cout << "Agenda llena. No se permiten más clientes." << endl;
                 return;
-            } 
-            else {
+            } else {
                 while (nombre.empty()) {
                     cout << "Ingrese el nombre del cliente: " << endl;
                     getline(cin, nombre);
@@ -135,19 +133,19 @@ void NuevosClientes() {
 
                 bool hotmail = false;
                 bool gmail = false;
-                while (hotmail == false or gmail == false) {
-                    for (char c : correo) {
-                        if (c == '@hotmail.com') {
-                            hotmail = true;
-                        } else if (c == '@gmail.com') {
-                            gmail = true;
-                        }
+                while (!hotmail or !gmail) {
+                    cout << "Ingrese el correo electrónico del cliente: " << endl;
+                    getline(cin, correo);
+                    
+                    if (correo.find("@hotmail.com") != string::npos) {
+                        hotmail = true;
+                    } else if (correo.find("@gmail.com") != string::npos) {
+                        gmail = true;
                     }
-                    if (hotmail == true or gmail == true) {
-                        cout << "Ingrese el correo electrónico del cliente: " << endl;
-                        getline(cin, correo);
-                    }
-                    else { cout << "Correo inválido. Ingrese nuevamente: " << endl; }
+
+                    if (!hotmail or !gmail) {
+                        cout << "Correo inválido. Ingrese nuevamente: " << endl;
+                    }  
                 }
 
                 while (telefono.length() != 9) {
@@ -170,20 +168,20 @@ void NuevosClientes() {
 
                 if (tipoCliente == 'I') {
                     while (ruc.length() != 11) {
-                        cout << "Ingrese el RUC del cliente: ";
+                        cout << "Ingrese el RUC del cliente: " << endl;
                         getline(cin, ruc);
                         if (ruc.length() != 11) {
-                            cout << "RUC inválido. Debe tener 11 dígitos. Ingrese nuevamente: ";
+                            cout << "RUC inválido. Debe tener 11 dígitos. Ingrese nuevamente: " << endl;
                         }
                     }
 
                     cout << "Ingrese la dirección del cliente: ";
                     getline(cin, direccion);
 
-                    while (categoria != "A" && categoria != "B" && categoria != "C" && categoria != "D") {
+                    while (categoria != "A" and categoria != "B" and categoria != "C" and categoria != "D") {
                         cout << "Ingrese la categoría del cliente (A/B/C/D): ";
-                        getline(cin, categoria);
-                        if (categoria != "A" && categoria != "B" && categoria != "C" && categoria != "D") {
+                        cin >> categoria;
+                        if (categoria != "A" and categoria != "B" and categoria != "C" and categoria != "D") {
                             cout << "Categoría inválida. Ingrese nuevamente (A/B/C/D): ";
                         }
                     }
@@ -191,6 +189,7 @@ void NuevosClientes() {
                     Clientesindividuales nuevoCliente(ruc, direccion, nombre, telefono, ruc, direccion, categoria);
                     clientes.push_back(nuevoCliente);
                     cout << "Cliente individual agregado correctamente." << endl;
+                    break;
                 } else {
                     while (ruc.length() != 11) {
                         cout << "Ingrese el RUC del cliente: ";
@@ -206,6 +205,7 @@ void NuevosClientes() {
                     Clientescorporativos nuevoCliente(ruc, direccion, nombre, telefono, ruc, direccion);
                     clientes.push_back(nuevoCliente);
                     cout << "Cliente corporativo agregado correctamente." << endl;
+                    break;
                 }
             }
         }
@@ -226,34 +226,55 @@ void menu () {
         cout << "8. SALIR" << endl;
         cout << "Ingrese su opcion: " ;
         cin >> opc;
+        system("pause");
+        system("cls");
+
         switch (opc) {
             case 1:
                 cout << "Selecciono NUEVOS CLIENTES" << endl;
                 NuevosClientes();
+                system("pause");
+                system("cls");
                 break;
             case 2:
                 cout << "Selecciono BUSCAR CLIENTES" << endl;
+                system("pause");
+                system("cls");
                 break;
             case 3:
                 cout << "Selecciono NUEVO VENDEDOR" << endl;
+                system("pause");
+                system("cls");
                 break;
             case 4:
                 cout << "Selecciono NUEVO PRODUCTO" << endl;
+                system("pause");
+                system("cls");
                 break;
             case 5:
                 cout << "Selecciono VENTAS" << endl;
+                system("pause");
+                system("cls");
                 break;
             case 6:
                 cout << "Selecciono LISTA DE CLIENTES" << endl;
+                system("pause");
+                system("cls");
                 break;
             case 7:
                 cout << "Selecciono LISTA DE VENDEDORES" << endl;
+                system("pause");
+                system("cls");
                 break;
             case 8:
                 cout << "Saliendo del programa..." << endl;
+                system("pause");
+                system("cls");
                 break;
             default:
-                cout << "ERROR" << endl;
+                cout << "ERROR, Opción incorrecta. Ingresar una opción correcta: " << endl;
+                system("pause");
+                system("cls");
         }
     }
 }
