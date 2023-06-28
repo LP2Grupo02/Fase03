@@ -117,39 +117,66 @@ class Productos {
         }
 };
 
-class Venta {
-    private:
-        struct Producto {
-            string nombre;
-            float precio;
-            int cantidad;
-        };
-
-        vector<Producto> ventas;
-
-    public:
-        void agregarProducto(const string& nombre, float precio, int cantidad) {
-            Producto producto;
-            producto.nombre = nombre;
-            producto.precio = precio;
-            producto.cantidad = cantidad;
-
-            ventas.push_back(producto);
-        }
-
-        void mostrarVentas() {
-            for (const auto& producto : ventas) {
-                cout<<"                                Venta 001                               "<<endl;
-                cout<<"Fecha 27/06/2023"<<endl;
-                cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
-                cout<<"001"<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.cantidad<<"                    "<<producto.precio*producto.cantidad<<endl;
-                cout << "--------------------------------------------------------------------------------------" << endl;
-            }
-        }
-};
-
+vector<Productos> veProductos;
 vector<Clientescorporativos> cliCO;
 vector<Clientesindividuales> cliIN;
+
+void reporteVentas() {
+    string codigo;
+    char tipo;
+    cout << "              Reporte de ventas por Clientes             " << endl;
+    cout << "Ingrese el tipo de cliente a buscar (I/C): ";
+    cin >> tipo;
+    cout << "Ingrese el código del cliente: ";
+    cin >> codigo;
+
+    if (tipo == 'I') {
+        bool encontrado = false;
+        for (const auto& cliente : cliIN) {
+            if (cliente.codigo == codigo) {
+                cout << "Cliente encontrado"<< endl;
+
+                for (Productos& producto : veProductos) {
+                    cout<<"                                Venta 001                               "<<endl;
+                    cout<<"Fecha 27/06/2023"<<endl;
+                    cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
+                    cout<<producto.codigo<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.stock<<"                    "<<producto.precio*producto.stock<<endl;
+                    cout << "--------------------------------------------------------------------------------------" << endl;
+                }
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            cout << "Cliente no encontrado" << endl;
+        }
+    }
+    else if (tipo == 'C') {
+        bool encontrado = false;
+        for (const auto& cliente : cliCO) {
+            if (cliente.codigo == codigo) {
+                cout << "Cliente encontrado"<< endl;
+                
+                for (Productos& producto : veProductos) {
+                    cout<<"                                Venta 001                               "<<endl;
+                    cout<<"Fecha 27/06/2023"<<endl;
+                    cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
+                    cout<<producto.codigo<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.stock<<"                    "<<producto.precio*producto.stock<<endl;
+                    cout << "--------------------------------------------------------------------------------------" << endl;
+                }
+                encontrado = true;
+                break;
+            }
+        }
+    
+        if (!encontrado) {
+            cout << "Cliente no encontrado" << endl;
+        }
+    }
+    else {
+        cout << "Tipo de cliente inválido" << endl;
+    }
+    }
 
 void NuevosClientes() {
     string correo = "xyz", codigo = "004", nombre = "", telefono = "123", direccion = "", ruc = "321", dni = "123", categoria = "Y";
@@ -434,8 +461,6 @@ void MostrarClientes() {
         cout << endl;
     }
 }
-
-vector<Productos> veProductos;
 
 void NuevoProducto() {
     string codigo = "", nombre = "", descripcion = "";
