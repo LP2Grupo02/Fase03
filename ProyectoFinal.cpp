@@ -117,6 +117,37 @@ public:
     }
 };
 
+class Venta {
+private:
+    struct Producto {
+        string nombre;
+        float precio;
+        int cantidad;
+    };
+
+    vector<Producto> ventas;
+
+public:
+    void agregarProducto(const string& nombre, float precio, int cantidad) {
+        Producto producto;
+        producto.nombre = nombre;
+        producto.precio = precio;
+        producto.cantidad = cantidad;
+
+        ventas.push_back(producto);
+    }
+
+    void mostrarVentas() {
+        for (const auto& producto : ventas) {
+            cout<<"                                Venta 001                               "<<endl;
+            cout<<"Fecha 27/06/2023"<<endl;
+            cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
+            cout<<"001"<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.cantidad<<"                    "<<producto.precio*producto.cantidad<<endl;
+            cout << "--------------------------------------------------------------------------------------" << endl;
+        }
+    }
+};
+
 vector<Clientescorporativos> cliCO;
 vector<Clientesindividuales> cliIN;
 
