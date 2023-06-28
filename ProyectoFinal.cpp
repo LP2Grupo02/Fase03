@@ -268,6 +268,7 @@ void BuscarClientes() {
     cin >> codigo;
 
     if (tipo == 'I') {
+        bool encontrado = false;
         for (const auto& cliente : cliIN) {
             if (cliente.codigo == codigo) {
                 cout << "Correo: " << cliente.correo << endl;
@@ -277,12 +278,16 @@ void BuscarClientes() {
                 cout << "DNI: " << cliente.DNI << endl;
                 cout << "Dirección: " << cliente.direccion << endl;
                 cout << "Categoría: " << cliente.categoria << endl;
+                encontrado = true;
                 break;
             }
         }
+        if (!encontrado) {
+            cout << "Cliente no encontrado" << endl;
+        }
     }
-
-    if (tipo == 'C') {
+    else if (tipo == 'C') {
+        bool encontrado = false;
         for (const auto& cliente : cliCO) {
             if (cliente.codigo == codigo) {
                 cout << "Correo: " << cliente.correo << endl;
@@ -291,14 +296,18 @@ void BuscarClientes() {
                 cout << "Teléfono: " << cliente.telefono << endl;
                 cout << "RUC: " << cliente.ruc << endl;
                 cout << "Dirección: " << cliente.direccion << endl;
+                encontrado = true;
                 break;
             }
         }
-    } else {
-        cout << "Cliente no encontrado" << endl;
+        if (!encontrado) {
+            cout << "Cliente no encontrado" << endl;
+        }
+    }
+    else {
+        cout << "Tipo de cliente inválido" << endl;
     }
 }
-
 
 vector<Vendedores> vendedores;
 
