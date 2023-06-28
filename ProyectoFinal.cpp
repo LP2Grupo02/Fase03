@@ -7,145 +7,145 @@
 using namespace std;
 
 class Personas {
-private:
-    int clave;
+    private:
+        int clave;
 
-protected:
-    string correo;
+    protected:
+        string correo;
 
-public:
-    string codigo;
-    string nombre;
-    string telefono;
+    public:
+        string codigo;
+        string nombre;
+        string telefono;
 
-    Personas(int cl, string co, string cd, string nm, string tl) {
-        this->clave = cl;
-        this->correo = co;
-        this->codigo = cd;
-        this->nombre = nm;
-        this->telefono = tl;
-    }
+        Personas(int cl, string co, string cd, string nm, string tl) {
+            this->clave = cl;
+            this->correo = co;
+            this->codigo = cd;
+            this->nombre = nm;
+            this->telefono = tl;
+        }
 
-    Personas(string co, string cd, string nm, string tl) {
-        this->correo = co;
-        this->codigo = cd;
-        this->nombre = nm;
-        this->telefono = tl;
-    }
+        Personas(string co, string cd, string nm, string tl) {
+            this->correo = co;
+            this->codigo = cd;
+            this->nombre = nm;
+            this->telefono = tl;
+        }
 };
 
 class Cliente : public Personas {
-public:
-    string direccion;
+    public:
+        string direccion;
 
-    Cliente(string co = " ", string cd = " ", string nm = " ", string tl = " ", string di = " ") : Personas(co, cd, nm, tl), direccion(di) {
-        this->direccion = di;
-    }
+        Cliente(string co = " ", string cd = " ", string nm = " ", string tl = " ", string di = " ") : Personas(co, cd, nm, tl), direccion(di) {
+            this->direccion = di;
+        }
 
-    friend void NuevosClientes();
-    friend void BuscarClientes();
+        friend void NuevosClientes();
+        friend void BuscarClientes();
 };
 
 class Clientesindividuales : public Cliente {
-public:
-    string categoria;
-    string DNI;
+    public:
+        string categoria;
+        string DNI;
 
-    Clientesindividuales(string co = "", string cd = "", string nm = "", string tl = "", string di = "", string _dni = "", string ct = "D") : Cliente(co, cd, nm, tl, di), DNI(_dni), categoria(ct) {}
+        Clientesindividuales(string co = "", string cd = "", string nm = "", string tl = "", string di = "", string _dni = "", string ct = "D") : Cliente(co, cd, nm, tl, di), DNI(_dni), categoria(ct) {}
 
-    int tasadescuento2(int monto) {
-        if (categoria == "D" or categoria == "C") {
-            cout << "Usted es un cliente de nivel bajo, no accede a descuento" << endl;
+        int tasadescuento(int monto, string categoria) {
+            if (categoria == "D" or categoria == "C") {
+                cout << "Usted es un cliente de nivel bajo, no accede a descuento" << endl;
+            }
+            else if (categoria == "A" or categoria == "B") {
+                cout << "Usted es un cliente de nivel alto, accede a descuento" << endl;
+                int predesc = monto - (monto * 3 / 100);
+                return predesc;
+            }
+            else {
+                cout << "Ingresó un dato erróneo" << endl;
+            }
+            return 0;
         }
-        else if (categoria == "A" or categoria == "B") {
-            cout << "Usted es un cliente de nivel alto, accede a descuento" << endl;
-            int predesc = monto - (monto * 3 / 100);
-            return predesc;
-        }
-        else {
-            cout << "Ingresó un dato erróneo" << endl;
-        }
-        return 0;
-    }
 
-    friend void NuevosClientes();
-    friend void MostrarClientes();
+        friend void NuevosClientes();
+        friend void MostrarClientes();
 };
 
 class Clientescorporativos : public Cliente {
-public:
-    string ruc;
+    public:
+        string ruc;
 
-    Clientescorporativos(string co = "", string cd = "", string nm = "", string tl = "", string di = "",  string _ruc = "") : Cliente(co, cd, nm, tl, di), ruc(_ruc) {
-        this->ruc = _ruc;
-    }
+        Clientescorporativos(string co = "", string cd = "", string nm = "", string tl = "", string di = "",  string _ruc = "") : Cliente(co, cd, nm, tl, di), ruc(_ruc) {
+            this->ruc = _ruc;
+        }
 
-    int tasadescuento2(int monto) {
-        int predesc = monto - (monto * 10 / 100);
-        return predesc;
-    }
+        int tasadescuento(int monto) {
+            int predesc = monto - (monto * 10 / 100);
+            return predesc;
+        }
 
-    friend void MostrarClientes();
+        friend void MostrarClientes();
 };
 
 class Vendedores : public Personas {
-protected:
-    float salario;
-public:
-    Vendedores(string correo = " ", string codigo = " ", string nombre = " ", string telefono = " ", float salario = 0.0) : Personas(correo, codigo, nombre, telefono), salario(salario) {
-        this->salario = salario;
-    }
-    friend void MostrarVendedores();
+    protected:
+        float salario;
+    public:
+        Vendedores(string correo = " ", string codigo = " ", string nombre = " ", string telefono = " ", float salario = 0.0) : Personas(correo, codigo, nombre, telefono), salario(salario) {
+            this->salario = salario;
+        }
+        friend void MostrarVendedores();
 };
 
 class Productos {
-public:
-    string codigo;
-    string nombre;
-    string descripcion;
-    float precio;
-    string tipo;
-    int stock;
+    public:
+        string codigo;
+        string nombre;
+        string descripcion;
+        float precio;
+        string tipo;
+        int stock;
 
-    Productos(string codigo = "",string nombre = "", string descripcion = "", float precio = 0.0f, string tipo = "", int stock = 0) {
-        this->codigo = codigo;
-        this->nombre = nombre;
-        this->descripcion = descripcion;
-        this->precio = precio;
-        this->tipo = tipo;
-        this->stock = stock;
-    }
+        Productos(string codigo = "",string nombre = "", string descripcion = "", float precio = 0.0f, string tipo = "", int stock = 0) {
+            this->codigo = codigo;
+            this->nombre = nombre;
+            this->descripcion = descripcion;
+            this->precio = precio;
+            this->tipo = tipo;
+            this->stock = stock;
+        }
 };
 
 class Venta {
-private:
-    struct Producto {
-        string nombre;
-        float precio;
-        int cantidad;
-    };
+    private:
+        struct Producto {
+            string nombre;
+            float precio;
+            int cantidad;
+        };
 
-    vector<Producto> ventas;
+        vector<Producto> ventas;
 
-public:
-    void agregarProducto(const string& nombre, float precio, int cantidad) {
-        Producto producto;
-        producto.nombre = nombre;
-        producto.precio = precio;
-        producto.cantidad = cantidad;
+    public:
+        void agregarProducto(const string& nombre, float precio, int cantidad) {
+            Producto producto;
+            producto.nombre = nombre;
+            producto.precio = precio;
+            producto.cantidad = cantidad;
 
-        ventas.push_back(producto);
-    }
-
-    void mostrarVentas() {
-        for (const auto& producto : ventas) {
-            cout<<"                                Venta 001                               "<<endl;
-            cout<<"Fecha 27/06/2023"<<endl;
-            cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
-            cout<<"001"<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.cantidad<<"                    "<<producto.precio*producto.cantidad<<endl;
-            cout << "--------------------------------------------------------------------------------------" << endl;
+            ventas.push_back(producto);
         }
-    }
+
+        void mostrarVentas() {
+            for (const auto& producto : ventas) {
+                cout<<"                                Venta 001                               "<<endl;
+                cout<<"Fecha 27/06/2023"<<endl;
+                cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
+                cout<<"001"<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.cantidad<<"                    "<<producto.precio*producto.cantidad<<endl;
+                cout << "--------------------------------------------------------------------------------------" << endl;
+            }
+        }
 };
 
 vector<Clientescorporativos> cliCO;
