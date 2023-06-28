@@ -260,47 +260,45 @@ void NuevosClientes() {
 
 void BuscarClientes() {
     string codigo;
-    string tipo;
-    cout << "              Busqueda de Clientes             " << endl;
-    cout << "Ingrese el tipo de cliente a buscar (I/C): " << endl;
+    char tipo;
+    cout << "              Búsqueda de Clientes             " << endl;
+    cout << "Ingrese el tipo de cliente a buscar (I/C): ";
     cin >> tipo;
-    cout << "Ingrese el codigo del cliente: " << endl;
+    cout << "Ingrese el código del cliente: ";
     cin >> codigo;
 
-    if (tipo == "I") {
-        for (int i = 0; i < cliIN.size(); i++) {
-            if (cliIN[i].codigo == codigo) {
-                cout << "Correo: " << cliIN[i].correo << endl;
-                cout << "Codigo: " << cliIN[i].codigo << endl;
-                cout << "Nombre: " << cliIN[i].nombre << endl;
-                cout << "Telefono: " << cliIN[i].telefono << endl;
-                cout << "DNI: " << cliIN[i].DNI << endl;
-                cout << "Direccion: " << cliIN[i].direccion << endl;
-                cout << "Categoria: " << cliIN[i].categoria << endl;
+    if (tipo == 'I') {
+        for (const auto& cliente : cliIN) {
+            if (cliente.codigo == codigo) {
+                cout << "Correo: " << cliente.correo << endl;
+                cout << "Código: " << cliente.codigo << endl;
+                cout << "Nombre: " << cliente.nombre << endl;
+                cout << "Teléfono: " << cliente.telefono << endl;
+                cout << "DNI: " << cliente.DNI << endl;
+                cout << "Dirección: " << cliente.direccion << endl;
+                cout << "Categoría: " << cliente.categoria << endl;
                 break;
-            }
-            else {
-                cout << "Cliente NO encontrado." << endl;
             }
         }
     }
 
-    if (tipo == "C") {
-        for (int i = 0; i < cliCO.size(); i++) {
-            if (cliCO[i].codigo == codigo) {
-                cout << "Correo: " << cliCO[i].correo << endl;
-                cout << "Codigo: " << cliCO[i].codigo << endl;
-                cout << "Nombre: " << cliCO[i].nombre << endl;
-                cout << "Telefono: " << cliCO[i].telefono << endl;
-                cout << "RUC: " << cliCO[i].ruc << endl;
-                cout << "Direccion: " << cliCO[i].direccion << endl;
-            }
-            else {
-                cout << "Cliente NO encontrado." << endl;
+    if (tipo == 'C') {
+        for (const auto& cliente : cliCO) {
+            if (cliente.codigo == codigo) {
+                cout << "Correo: " << cliente.correo << endl;
+                cout << "Código: " << cliente.codigo << endl;
+                cout << "Nombre: " << cliente.nombre << endl;
+                cout << "Teléfono: " << cliente.telefono << endl;
+                cout << "RUC: " << cliente.ruc << endl;
+                cout << "Dirección: " << cliente.direccion << endl;
+                break;
             }
         }
+    } else {
+        cout << "Cliente no encontrado" << endl;
     }
 }
+
 
 vector<Vendedores> vendedores;
 
