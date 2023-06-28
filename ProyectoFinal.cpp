@@ -152,15 +152,6 @@ vector<Clientescorporativos> cliCO;
 vector<Clientesindividuales> cliIN;
 
 void NuevosClientes() {
-    cliCO.clear();
-    cliIN.clear();
-    Clientescorporativos cliente1("juan4855@gmail.com", "001", "Juan", "945733867", "Av.Parra 425", "23541789302");
-    Clientescorporativos cliente2("julieta25@gmail.com", "002", "Julieta", "978456121", "Av.Parra 429", "56387030242");
-    Clientesindividuales cliente3("Manuel2985@gmail.com", "003", "Manuel", "954872634", "Calle Melgar 123", "12345678", "A");
-    cliCO.push_back(cliente1);
-    cliCO.push_back(cliente2);
-    cliIN.push_back(cliente3);
-
     string correo = "xyz", codigo = "004", nombre = "", telefono = "123", direccion = "", ruc = "321", dni = "123", categoria = "Y";
 
     if ((cliCO.size() + cliIN.size()) >= 6) {
@@ -343,29 +334,6 @@ void BuscarClientes() {
 vector<Vendedores> vendedores;
 
 void AgregarVendedor() {
-    vendedores.clear();
-    Vendedores vendedor1("auron@gmail.com", "2023001", "Auron", "959697901", 3800.0);
-    Vendedores vendedor2("reborn@hotmail.com", "2023002", "Reborn", "959697902", 1500.0);
-    Vendedores vendedor3("mariana@gmail.com", "2023003", "Mariana", "959697903", 1800.0);
-    Vendedores vendedor4("carola@gmail.com", "2023004", "Carola", "959697904", 2500.0);
-    Vendedores vendedor5("juan@hotmail.com", "2023005", "Juan", "959697905", 1300.0);
-    Vendedores vendedor6("sara@gmail.com", "2023006", "Sara", "959697906", 1500.0);
-    Vendedores vendedor7("osvaldo@gmail.com", "2023007", "Osvaldo", "959697907", 2800.0);
-    Vendedores vendedor8("raul@hotmail.com", "2023008", "Raul", "959697908", 1700.0);
-    Vendedores vendedor9("ocho@gmail.com", "2023009", "Ocho", "959697909", 1500.0);
-    Vendedores vendedor10("axoxxer@hotmail.com", "2023010", "Axoxer", "959697910", 1800.0);
-
-    vendedores.push_back(vendedor1);
-    vendedores.push_back(vendedor2);
-    vendedores.push_back(vendedor3);
-    vendedores.push_back(vendedor4);
-    vendedores.push_back(vendedor5);
-    vendedores.push_back(vendedor6);
-    vendedores.push_back(vendedor7);
-    vendedores.push_back(vendedor8);
-    vendedores.push_back(vendedor9);
-    vendedores.push_back(vendedor10);
-
     string nombre = "abc", codigo, telefono = "123", correo = "abc";
     double salario;
 
@@ -420,7 +388,15 @@ void AgregarVendedor() {
 void MostrarVendedores() {
     cout << "Lista de vendedores:" << endl;
     for (Vendedores& vendedor : vendedores) {
-        cout << "Correo: " << vendedor.correo << ", Codigo: " << vendedor.codigo << ", Nombre: " << vendedor.nombre << ", Telefono: " << vendedor.telefono << ", Salario: " << vendedor.salario << endl;
+        ofstream listavendedores("listvendedores.txt");
+        listavendedores << "Correo: " << vendedor.correo << ", Codigo: " << vendedor.codigo << ", Nombre: " << vendedor.nombre << ", Telefono: " << vendedor.telefono << ", Salario: " << vendedor.salario << endl;
+        ifstream archivo2("listvendedores.txt)");
+        if(archivo2.is_open()){
+           string linea;
+           while(getline(archivo2,linea)){
+            cout << linea << endl;
+           }
+        }
         cout << endl;
     }
 }
@@ -430,13 +406,31 @@ void MostrarClientes() {
 
     cout << "Clientes individuales: " << endl;
     for (Clientesindividuales& clI : cliIN) {
-        cout << "Correo: " << clI.correo << ", Codigo: " << clI.codigo << ", Nombre: " << clI.nombre << ", Telefono: " << clI.telefono << ", Telefono: " << clI.telefono << ", DNI: " << clI.DNI << ", Direccion: " << clI.direccion << ", Categoria: " << clI.categoria << endl;
+        ofstream listaclientes("listclientesin.txt");
+        listaclientes << "Correo: " << clI.correo << ", Codigo: " << clI.codigo << ", Nombre: " << clI.nombre << ", Telefono: " << clI.telefono << ", Telefono: " << clI.telefono << ", DNI: " << clI.DNI << ", Direccion: " << clI.direccion << ", Categoria: " << clI.categoria << endl;
+        ifstream archivo1("listclientesin.txt");
+        if (archivo1.is_open()) {
+            string linea;
+            while (getline(archivo1, linea)) {
+                cout << linea << endl;
+            }
+            archivo1.close();
+        }
         cout << endl;
     }
 
     cout << "Clientes corporativos: " << endl;
     for (Clientescorporativos& clC : cliCO) {
-        cout << "Correo: " << clC.correo << ", Codigo: " << clC.codigo << ", Nombre: " << clC.nombre << ", Telefono: " << clC.telefono << ", Telefono: " << clC.telefono << ", RUC: " << clC.ruc << ", Direccion: " << clC.direccion << endl;
+        ofstream listaclientes1("listclientescor.txt");
+        listaclientes1 << "Correo: " << clC.correo << ", Codigo: " << clC.codigo << ", Nombre: " << clC.nombre << ", Telefono: " << clC.telefono << ", Telefono: " << clC.telefono << ", RUC: " << clC.ruc << ", Direccion: " << clC.direccion << endl;
+        ifstream archivo3("listclientescor.txt");
+                if (archivo3.is_open()) {
+            string linea;
+            while (getline(archivo3, linea)) {
+                cout << linea << endl;
+            }
+            archivo3.close();
+        }
         cout << endl;
     }
 }
@@ -444,15 +438,6 @@ void MostrarClientes() {
 vector<Productos> veProductos;
 
 void NuevoProducto() {
-    veProductos.clear();
-    Productos Producto1("001", "Limpiamax", "Este es un producto que ayudara con la limpieza de utensilios de cocina", 12.50f, "Aseo", 5);
-    Productos Producto2("002", "Sarten", "Este es una sarten que cocinara sus comidas de la mejor manera", 32.50f, "Utensilio", 3);
-    Productos Producto3("003", "tortees", "Este es un snack picante hecho a base de hojuela de maiz", 2.00f, "Snack", 2);
-    Productos Producto4("004", "hot dog", "Un embutido muy agradable al paladar y ademas es economico", 7.00f, "Embutido", 4);
-    veProductos.push_back(Producto1);
-    veProductos.push_back(Producto2);
-    veProductos.push_back(Producto3);
-    veProductos.push_back(Producto4);
     string codigo = "", nombre = "", descripcion = "";
     float precio = -1.0f;
     string tipo = "";
@@ -524,6 +509,7 @@ void NuevoProducto() {
     veProductos.push_back(nuevoProducto);
     cout << "Producto agregado correctamente." << endl;
 }
+
 void MostrarProductos() {
     cout << "Lista de productos:" << endl;
     for (Productos& producto : veProductos) {
@@ -540,10 +526,11 @@ void MostrarProductos() {
         cout << endl;
     }
 }
+
 void menu() {
-    int opc = 0;
-    while (opc != 8) {
-        cout << "SISTEMA COMERCIAL" << endl;
+    string opc = "0";
+    while (opc != "8") {
+        cout << "SISTEMA DE COMERCIO DE PRODUCTOS DE CONSTRUCCIÓN" << endl;
         cout << "1. NUEVOS CLIENTES" << endl;
         cout << "2. BUSCAR CLIENTES" << endl;
         cout << "3. NUEVO VENDEDOR" << endl;
@@ -557,55 +544,54 @@ void menu() {
         system("pause");
         system("cls");
 
-        switch (opc) {
-        case 1:
+        if (opc == "1") { 
             cout << "Selecciono NUEVOS CLIENTES" << endl;
             NuevosClientes();
             system("pause");
             system("cls");
             break;
-        case 2:
+        } else if (opc == "2") { 
             cout << "Selecciono BUSCAR CLIENTES" << endl;
             BuscarClientes();
             system("pause");
             system("cls");
             break;
-        case 3:
+        } else if (opc == "3") { 
             cout << "Selecciono NUEVO VENDEDOR" << endl;
             AgregarVendedor();
             system("pause");
             system("cls");
             break;
-        case 4:
+        } else if (opc == "4") { 
             cout << "Selecciono NUEVO PRODUCTO" << endl;
             NuevoProducto();
             MostrarProductos();
             system("pause");
             system("cls");
             break;
-        case 5:
+        } else if (opc == "5") { 
             cout << "Selecciono VENTAS" << endl;
             system("pause");
             system("cls");
             break;
-        case 6:
+        } else if (opc == "6") { 
             cout << "Selecciono LISTA DE CLIENTES" << endl;
             MostrarClientes();
             system("pause");
             system("cls");
             break;
-        case 7:
+        } else if (opc == "7") { 
             cout << "Selecciono LISTA DE VENDEDORES" << endl;
             MostrarVendedores();
             system("pause");
             system("cls");
             break;
-        case 8:
+        } else if (opc == "8") { 
             cout << "Saliendo del programa..." << endl;
             system("pause");
             system("cls");
             break;
-        default:
+        } else {
             cout << "ERROR, Opción incorrecta. Ingresar una opción correcta: " << endl;
             system("pause");
             system("cls");
@@ -614,5 +600,42 @@ void menu() {
 }
 
 int main() {
+    Clientescorporativos cliente1("juan4855@gmail.com", "001", "Juan", "945733867", "Av.Parra 425", "23541789302");
+    Clientescorporativos cliente2("julieta25@gmail.com", "002", "Julieta", "978456121", "Av.Parra 429", "56387030242");
+    Clientesindividuales cliente3("Manuel2985@gmail.com", "003", "Manuel", "954872634", "Calle Melgar 123", "12345678", "A");
+    cliCO.push_back(cliente1);
+    cliCO.push_back(cliente2);
+    cliIN.push_back(cliente3);
+
+    Vendedores vendedor1("auron@gmail.com", "2023001", "Auron", "959697901", 3800.0);
+    Vendedores vendedor2("reborn@hotmail.com", "2023002", "Reborn", "959697902", 1500.0);
+    Vendedores vendedor3("mariana@gmail.com", "2023003", "Mariana", "959697903", 1800.0);
+    Vendedores vendedor4("carola@gmail.com", "2023004", "Carola", "959697904", 2500.0);
+    Vendedores vendedor5("juan@hotmail.com", "2023005", "Juan", "959697905", 1300.0);
+    Vendedores vendedor6("sara@gmail.com", "2023006", "Sara", "959697906", 1500.0);
+    Vendedores vendedor7("osvaldo@gmail.com", "2023007", "Osvaldo", "959697907", 2800.0);
+    Vendedores vendedor8("raul@hotmail.com", "2023008", "Raul", "959697908", 1700.0);
+    Vendedores vendedor9("ocho@gmail.com", "2023009", "Ocho", "959697909", 1500.0);
+    Vendedores vendedor10("axoxxer@hotmail.com", "2023010", "Axoxer", "959697910", 1800.0);
+    vendedores.push_back(vendedor1);
+    vendedores.push_back(vendedor2);
+    vendedores.push_back(vendedor3);
+    vendedores.push_back(vendedor4);
+    vendedores.push_back(vendedor5);
+    vendedores.push_back(vendedor6);
+    vendedores.push_back(vendedor7);
+    vendedores.push_back(vendedor8);
+    vendedores.push_back(vendedor9);
+    vendedores.push_back(vendedor10);
+
+    Productos Producto1("001", "Limpiamax", "Este es un producto que ayudara con la limpieza de utensilios de cocina", 12.50f, "Aseo", 5);
+    Productos Producto2("002", "Sarten", "Este es una sarten que cocinara sus comidas de la mejor manera", 32.50f, "Utensilio", 3);
+    Productos Producto3("003", "tortees", "Este es un snack picante hecho a base de hojuela de maiz", 2.00f, "Snack", 2);
+    Productos Producto4("004", "hot dog", "Un embutido muy agradable al paladar y ademas es economico", 7.00f, "Embutido", 4);
+    veProductos.push_back(Producto1);
+    veProductos.push_back(Producto2);
+    veProductos.push_back(Producto3);
+    veProductos.push_back(Producto4);
+
     menu();
 }
