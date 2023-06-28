@@ -66,6 +66,8 @@ class Clientesindividuales : public Cliente{
             }
             return 0;
         }
+
+        friend void MostrarClientes();
 };
 
 class Clientescorporativos : public Cliente{
@@ -76,6 +78,8 @@ class Clientescorporativos : public Cliente{
             int predesc = monto - (monto * 10 / 100);
             return predesc;
         }
+        
+        friend void MostrarClientes();
 };
 
 class Vendedores : public Personas {
@@ -351,6 +355,20 @@ void MostrarVendedores() {
     }
 }
 
+void MostrarClientes() {
+    cout << "Lista de clientes:" << endl;
+    cout << "Clientes individuales: " << endl;
+    for (Clientesindividuales& clI : cliIN) {
+        cout << "Correo: " << clI.correo << ", Codigo: " << clI.codigo << ", Nombre: " << clI.nombre << ", Telefono: " << clI.telefono << ", Telefono: " << clI.telefono << ", RUC: " << clI.ruc << ", Direccion: " << clI.direccion << ", Categoria: " << clI.categoria << endl;
+        cout << endl;
+    }
+    cout << "Clientes corporativos: " << endl;
+    for (Clientescorporativos& clC : cliCO) {
+        cout << "Correo: " << clC.correo << ", Codigo: " << clC.codigo << ", Nombre: " << clC.nombre << ", Telefono: " << clC.telefono << ", Telefono: " << clC.telefono << ", RUC: " << clC.ruc << ", Direccion: " << clC.direccion << endl;
+        cout << endl;
+    }
+}
+
 void menu () {
     int opc = 0;
     while (opc != 8) {
@@ -399,6 +417,7 @@ void menu () {
                 break;
             case 6:
                 cout << "Selecciono LISTA DE CLIENTES" << endl;
+                MostrarClientes();
                 system("pause");
                 system("cls");
                 break;
