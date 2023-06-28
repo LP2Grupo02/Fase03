@@ -345,7 +345,7 @@ void AgregarVendedor() {
         else {
             bool hotmail = false;
             bool gmail = false;
-            while (!hotmail or !gmail) {
+            while (!hotmail && !gmail) {
                 cout << "Ingrese el correo electrónico del cliente: " << endl;
                 getline(cin, correo);
 
@@ -356,7 +356,7 @@ void AgregarVendedor() {
                     gmail = true;
                 }
 
-                if (!hotmail or !gmail) {
+                if (!hotmail && !gmail) {
                     cout << "Correo inválido. Ingrese nuevamente: " << endl;
                 }
             }
