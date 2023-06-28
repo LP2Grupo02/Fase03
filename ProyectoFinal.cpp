@@ -36,22 +36,22 @@ public:
 
 class Cliente : public Personas {
 public:
-    string ruc;
     string direccion;
 
-    Cliente(string co = " ", string cd = " ", string nm = " ", string tl = " ", string _ruc = " ", string di = " ") : Personas(co, cd, nm, tl), ruc(_ruc), direccion(di) {
-        this->ruc = _ruc;
+    Cliente(string co = " ", string cd = " ", string nm = " ", string tl = " ", string di = " ") : Personas(co, cd, nm, tl), direccion(di) {
         this->direccion = di;
     }
 
+    friend void NuevosClientes();
     friend void BuscarClientes();
 };
 
 class Clientesindividuales : public Cliente {
 public:
     string categoria;
+    string DNI;
 
-    Clientesindividuales(string co = "", string cd = "", string nm = "", string tl = "", string _ruc = "", string di = "", string ct = "D") : Cliente(co, cd, nm, tl, _ruc, di), categoria(ct) {}
+    Clientesindividuales(string co = "", string cd = "", string nm = "", string tl = "", string di = "", string _dni = "", string ct = "D") : Cliente(co, cd, nm, tl, di), DNI(_dni), categoria(ct) {}
 
     int tasadescuento2(int monto) {
         if (categoria == "D" or categoria == "C") {
@@ -68,12 +68,17 @@ public:
         return 0;
     }
 
+    friend void NuevosClientes();
     friend void MostrarClientes();
 };
 
 class Clientescorporativos : public Cliente {
 public:
-    Clientescorporativos(string co = "", string cd = "", string nm = "", string tl = "", string _ruc = "", string di = "") : Cliente(co, cd, nm, tl, _ruc, di) {}
+    string ruc;
+
+    Clientescorporativos(string co = "", string cd = "", string nm = "", string tl = "", string di = "",  string _ruc = "") : Cliente(co, cd, nm, tl, di), ruc(_ruc) {
+        this->ruc = _ruc;
+    }
 
     int tasadescuento2(int monto) {
         int predesc = monto - (monto * 10 / 100);
@@ -118,121 +123,137 @@ vector<Clientesindividuales> cliIN;
 void NuevosClientes() {
     cliCO.clear();
     cliIN.clear();
-    Clientescorporativos cliente1("001", "Juan", "23541789302", "Av.Parra 425", "juan4855@gmail.com", "945733867");
-    Clientescorporativos cliente2("002", "Julieta", "56387030242", "Av.Parra 429", "julieta25@gmail.com", "946324113");
-    Clientesindividuales cliente3("003", "Manuel", "A", "89283572386", "Calle Melgar 123", "Manuel2985@gmail.com", "954872634");
+    Clientescorporativos cliente1("juan4855@gmail.com", "001", "Juan", "945733867", "Av.Parra 425", "23541789302");
+    Clientescorporativos cliente2("julieta25@gmail.com", "002", "Julieta", "978456121", "Av.Parra 429", "56387030242");
+    Clientesindividuales cliente3("Manuel2985@gmail.com", "003", "Manuel", "954872634", "Calle Melgar 123", "12345678", "A");
     cliCO.push_back(cliente1);
     cliCO.push_back(cliente2);
     cliIN.push_back(cliente3);
 
-    string correo = "xyz", codigo = "00", nombre, telefono = "123", ruc = "321", direccion, categoria = "Y";
+    string correo = "xyz", codigo = "004", nombre = "", telefono = "123", direccion = "", ruc = "321", dni = "123", categoria = "Y";
 
-    for (int i = 0; i < cliCO.size(); i++) {
+    if ((cliCO.size() + cliIN.size()) >= 6) {
+        cout << "Agenda llena. No se permiten más clientes." << endl;
+        return;
+    }
+
+    while (nombre.empty()) {
+        cout << "Ingrese el nombre del cliente: " << endl;
+        getline(cin, nombre);
+        if (nombre.empty()) {
+            cout << "Nombre inválido. Ingrese nuevamente: " << endl;
+        }
+    }
+
+    bool hotmail = false;
+    bool gmail = false;
+    while (!hotmail && !gmail) {
+        cout << "Ingrese el correo electrónico del cliente: " << endl;
+        getline(cin, correo);
+
+        if (correo.find("@hotmail.com") != string::npos) {
+            hotmail = true;
+        }
+        else if (correo.find("@gmail.com") != string::npos) {
+            gmail = true;
+        }
+
+        if (!hotmail && !gmail) {
+            cout << "Correo inválido. Ingrese nuevamente: " << endl;
+        }
+    }
+
+    while (telefono.length() != 9) {
+        cout << "Ingrese el número de teléfono del cliente: " << endl;
+        getline(cin, telefono);
+        if (telefono.length() != 9) {
+            cout << "Teléfono inválido. Ingrese nuevamente: " << endl;
+        }
+    }
+
+    char tipoCliente = 'G';
+    while (tipoCliente != 'I' && tipoCliente != 'C') {
+        cout << "¿El cliente es un cliente individual o corporativo? (I/C): " << endl;
+        cin >> tipoCliente;
+        cin.ignore();
+        if (tipoCliente != 'I' && tipoCliente != 'C') {
+            cout << "Opción incorrecta. Ingrese nuevamente: " << endl;
+        }
+    }
+
+    if (tipoCliente == 'I') {
+        bool existeCliente = false;
         for (int i = 0; i < cliIN.size(); i++) {
-            if (cliCO[i].codigo == codigo or cliCO[i].nombre == nombre) {
-                cout << "Ese cliente ya existe en clientes corporativos." << endl;
+            if (cliIN[i].nombre == nombre and cliIN[i].telefono == telefono) {
+                existeCliente = true;
+                break;
             }
-            else if (cliIN[i].codigo == codigo or cliIN[i].nombre == nombre) {
-                cout << "Ese cliente ya existe en clientes individuales." << endl;
-            }
-            else {
-                if ((cliCO.size() + cliIN.size()) >= 6) {
-                    cout << "Agenda llena. No se permiten más clientes." << endl;
-                    return;
-                }
-                else {
-                    while (nombre.empty()) {
-                        cout << "Ingrese el nombre del cliente: " << endl;
-                        getline(cin, nombre);
-                        if (nombre.empty()) {
-                            cout << "Nombre inválido. Ingrese nuevamente: " << endl;
-                        }
-                    }
+        }
 
-                    bool hotmail = false;
-                    bool gmail = false;
-                    while (!hotmail or !gmail) {
-                        cout << "Ingrese el correo electrónico del cliente: " << endl;
-                        getline(cin, correo);
-
-                        if (correo.find("@hotmail.com") != string::npos) {
-                            hotmail = true;
-                            break;
-                        }
-                        else if (correo.find("@gmail.com") != string::npos) {
-                            gmail = true;
-                            break;
-                        }
-
-                        if (!hotmail or !gmail) {
-                            cout << "Correo inválido. Ingrese nuevamente: " << endl;
-                        }
-                    }
-
-                    while (telefono.length() != 9) {
-                        cout << "Ingrese el número de teléfono del cliente: " << endl;
-                        getline(cin, telefono);
-                        if (telefono.length() != 9) {
-                            cout << "Teléfono inválido. Ingrese nuevamente: " << endl;
-                        }
-                    }
-
-                    char tipoCliente = 'G';
-                    while (tipoCliente != 'I' && tipoCliente != 'C') {
-                        cout << "¿El cliente es un cliente individual o corporativo? (I/C): " << endl;
-                        cin >> tipoCliente;
-                        cin.ignore();
-                        if (tipoCliente != 'I' && tipoCliente != 'C') {
-                            cout << "Opción incorrecta. Ingrese nuevamente: " << endl;
-                        }
-                    }
-
-                    if (tipoCliente == 'I') {
-                        while (ruc.length() != 11) {
-                            cout << "Ingrese el RUC del cliente: " << endl;
-                            getline(cin, ruc);
-                            if (ruc.length() != 11) {
-                                cout << "RUC inválido. Debe tener 11 dígitos. Ingrese nuevamente: " << endl;
-                            }
-                        }
-
-                        cout << "Ingrese la dirección del cliente: ";
-                        getline(cin, direccion);
-
-                        while (categoria != "A" and categoria != "B" and categoria != "C" and categoria != "D") {
-                            cout << "Ingrese la categoría del cliente (A/B/C/D): ";
-                            cin >> categoria;
-                            if (categoria != "A" and categoria != "B" and categoria != "C" and categoria != "D") {
-                                cout << "Categoría inválida. Ingrese nuevamente (A/B/C/D): ";
-                            }
-                        }
-
-                        Clientesindividuales nuevoCliente(correo, codigo, nombre, telefono, ruc, direccion, categoria);
-                        cliIN.push_back(nuevoCliente);
-                        cout << "Cliente individual agregado correctamente." << endl;
-                        break;
-                        break;
-                        break;
-                    }
-                    else {
-                        while (ruc.length() != 11) {
-                            cout << "Ingrese el RUC del cliente: ";
-                            getline(cin, ruc);
-                            if (ruc.length() != 11) {
-                                cout << "RUC inválido. Debe tener 11 dígitos. Ingrese nuevamente: ";
-                            }
-                        }
-
-                        cout << "Ingrese la dirección del cliente: ";
-                        getline(cin, direccion);
-
-                        Clientescorporativos nuevoCliente(correo, codigo, nombre, telefono, ruc, direccion);
-                        cliCO.push_back(nuevoCliente);
-                        cout << "Cliente corporativo agregado correctamente." << endl;
-                        break;
-                    }
+        if (existeCliente) {
+            cout << "Ese cliente ya existe en clientes individuales." << endl;
+            return;
+        } else {
+            while (dni.length() != 8) {
+                cout << "Ingrese el DNI del cliente: " << endl;
+                getline(cin, dni);
+                if (dni.length() != 8) {
+                    cout << "DNI inválido. Debe tener 8 dígitos. Ingrese nuevamente: " << endl;
                 }
             }
+
+            cout << "Ingrese la dirección del cliente: ";
+            getline(cin, direccion);
+
+            while (categoria != "A" && categoria != "B" && categoria != "C" && categoria != "D") {
+                cout << "Ingrese la categoría del cliente (A/B/C/D): ";
+                cin >> categoria;
+                cin.ignore();
+                if (categoria != "A" && categoria != "B" && categoria != "C" && categoria != "D") {
+                    cout << "Categoría inválida. Ingrese nuevamente (A/B/C/D): ";
+                }
+            }
+
+            int ultimoCodigoInt = stoi(cliIN[cliIN.size() - 1].codigo);
+            ultimoCodigoInt++;
+            codigo = to_string(ultimoCodigoInt);
+
+            Clientesindividuales nuevoCliente(correo, codigo, nombre, telefono, dni, direccion, categoria);
+            cliIN.push_back(nuevoCliente);
+            cout << "Cliente individual agregado correctamente." << endl;
+            }
+    }
+    else {
+        bool existeCliente = false;
+        for (int i = 0; i < cliCO.size(); i++) {
+            if (cliCO[i].nombre == nombre and cliCO[i].telefono == telefono) {
+                existeCliente = true;
+                break;
+            }
+        }
+
+        if (existeCliente) {
+            cout << "Ese cliente ya existe en clientes corporativos." << endl;
+            return;
+        } else {
+            while (ruc.length() != 11) {
+                cout << "Ingrese el RUC del cliente: ";
+                getline(cin, ruc);
+                if (ruc.length() != 11) {
+                    cout << "RUC inválido. Debe tener 11 dígitos. Ingrese nuevamente: ";
+                }
+            }
+
+            cout << "Ingrese la dirección del cliente: ";
+            getline(cin, direccion);
+
+            int ultimoCodigoInt = stoi(cliCO[cliCO.size() - 1].codigo);
+            ultimoCodigoInt++;
+            codigo = to_string(ultimoCodigoInt);
+
+            Clientescorporativos nuevoCliente(correo, codigo, nombre, telefono, ruc, direccion);
+            cliCO.push_back(nuevoCliente);
+            cout << "Cliente corporativo agregado correctamente." << endl;
         }
     }
 }
@@ -253,7 +274,7 @@ void BuscarClientes() {
                 cout << "Codigo: " << cliIN[i].codigo << endl;
                 cout << "Nombre: " << cliIN[i].nombre << endl;
                 cout << "Telefono: " << cliIN[i].telefono << endl;
-                cout << "RUC: " << cliIN[i].ruc << endl;
+                cout << "DNI: " << cliIN[i].DNI << endl;
                 cout << "Direccion: " << cliIN[i].direccion << endl;
                 cout << "Categoria: " << cliIN[i].categoria << endl;
                 break;
@@ -371,7 +392,7 @@ void MostrarClientes() {
 
     cout << "Clientes individuales: " << endl;
     for (Clientesindividuales& clI : cliIN) {
-        cout << "Correo: " << clI.correo << ", Codigo: " << clI.codigo << ", Nombre: " << clI.nombre << ", Telefono: " << clI.telefono << ", Telefono: " << clI.telefono << ", RUC: " << clI.ruc << ", Direccion: " << clI.direccion << ", Categoria: " << clI.categoria << endl;
+        cout << "Correo: " << clI.correo << ", Codigo: " << clI.codigo << ", Nombre: " << clI.nombre << ", Telefono: " << clI.telefono << ", Telefono: " << clI.telefono << ", DNI: " << clI.DNI << ", Direccion: " << clI.direccion << ", Categoria: " << clI.categoria << endl;
         cout << endl;
     }
 
