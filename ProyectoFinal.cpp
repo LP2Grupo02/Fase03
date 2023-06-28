@@ -111,6 +111,8 @@ vector<Clientescorporativos> cliCO;
 vector<Clientesindividuales> cliIN;
 
 void NuevosClientes() {
+    cliCO.clear();
+    cliIN.clear();
     Clientescorporativos cliente1("001", "Juan", "23541789302", "Av.Parra 425", "juan4855@gmail.com", "945733867");
     Clientescorporativos cliente2("002", "Julieta", "56387030242", "Av.Parra 429", "julieta25@gmail.com", "946324113");
     Clientesindividuales cliente3("003", "Manuel", "A", "89283572386", "Calle Melgar 123", "Manuel2985@gmail.com", "954872634");
@@ -268,6 +270,7 @@ void BuscarClientes () {
 vector<Vendedores> vendedores;
 
 void AgregarVendedor () {
+    vendedores.clear();
     Vendedores vendedor1("auron@gmail.com","2023001","Auron","959697901",3800.0);
     Vendedores vendedor2("reborn@hotmail.com","2023002","Reborn","959697902",1500.0);
     Vendedores vendedor3("mariana@gmail.com","2023003","Mariana","959697903",1800.0);
@@ -421,4 +424,3 @@ void menu () {
 int main () {
     menu();
 }
-
