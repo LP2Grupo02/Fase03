@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -453,7 +454,7 @@ void NuevoProducto() {
             cout << "No ingreso un tipo de producto valido, intentelo de nuevo: " << endl;
         }
     }
-    while (stock > 5 and stock <= 0) {
+    while (stock > 5 or stock <= 0) {
         cout << "Ingrese el stock del producto(maximo 5): " << endl;
         cin >> stock;
         if (stock > 5 and stock <= 0) {
@@ -467,7 +468,16 @@ void NuevoProducto() {
 void MostrarProductos() {
     cout << "Lista de productos:" << endl;
     for (Productos& producto : veProductos) {
-        cout << "Codigo: " << producto.codigo << ", Nombre: " << producto.nombre << ", Descripcion: " << producto.descripcion << ", Precio: " << producto.precio << ", Tipo: " << producto.tipo << ", Stock: " << producto.stock << endl;
+        ofstream listaproductos("listproduc.txt");
+        listaproductos << "Codigo: " << producto.codigo << ", Nombre: " << producto.nombre << ", Descripcion: " << producto.descripcion << ", Precio: " << producto.precio << ", Tipo: " << producto.tipo << ", Stock: " << producto.stock << endl;
+        ifstream archivo("listproduc.txt");
+        if (archivo.is_open()) {
+            string linea;
+            while (getline(archivo, linea)) {
+                cout << linea << endl;
+            }
+            archivo.close();
+        }
         cout << endl;
     }
 }
