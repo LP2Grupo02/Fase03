@@ -366,7 +366,7 @@ void AgregarVendedor() {
             cin >> nombre;
 
             while (telefono.length() != 9) {
-                cout << "Ingrese el numero de teléfono del cliente: " << endl;
+                cout << "Ingrese el numero de telefono del cliente: " << endl;
                 getline(cin, telefono);
                 if (telefono.length() != 9) {
                     cout << "Telefono invalido, acepta hasta 9 dijitos, no menos. Ingrese nuevamente: " << endl;
