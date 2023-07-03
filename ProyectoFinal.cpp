@@ -344,7 +344,7 @@ void AgregarVendedor() {
             bool hotmail = false;
             bool gmail = false;
             while (!hotmail && !gmail) {
-                cout << "Ingrese el correo electrónico del cliente: " << endl;
+                cout << "Ingrese el correo electronico del cliente: " << endl;
                 getline(cin, correo);
 
                 if (correo.find("@hotmail.com") != string::npos) {
@@ -355,7 +355,7 @@ void AgregarVendedor() {
                 }
 
                 if (!hotmail && !gmail) {
-                    cout << "Correo inválido, no acepta solo numeros. Ingrese nuevamente: " << endl;
+                    cout << "Correo invalido, no acepta solo numeros. Ingrese nuevamente: " << endl;
                 }
             }
 
@@ -366,10 +366,10 @@ void AgregarVendedor() {
             cin >> nombre;
 
             while (telefono.length() != 9) {
-                cout << "Ingrese el número de teléfono del cliente: " << endl;
+                cout << "Ingrese el numero de teléfono del cliente: " << endl;
                 getline(cin, telefono);
                 if (telefono.length() != 9) {
-                    cout << "Teléfono inválido, acepta asta 9 dijitos, no menos. Ingrese nuevamente: " << endl;
+                    cout << "Telefono invalido, acepta hasta 9 dijitos, no menos. Ingrese nuevamente: " << endl;
                 }
             }
 
