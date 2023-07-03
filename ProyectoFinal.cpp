@@ -121,6 +121,62 @@ vector<Productos> veProductos;
 vector<Clientescorporativos> cliCO;
 vector<Clientesindividuales> cliIN;
 
+void reporteVentas() {
+    string codigo;
+    char tipo;
+    cout << "              Reporte de ventas por Clientes             " << endl;
+    cout << "Ingrese el tipo de cliente a buscar (I/C): ";
+    cin >> tipo;
+    cout << "Ingrese el código del cliente: ";
+    cin >> codigo;
+
+    if (tipo == 'I') {
+        bool encontrado = false;
+        for (const auto& cliente : cliIN) {
+            if (cliente.codigo == codigo) {
+                cout << "Cliente encontrado"<< endl;
+
+                for (Productos& producto : veProductos) {
+                    cout<<"                                Venta 001                               "<<endl;
+                    cout<<"Fecha 27/06/2023"<<endl;
+                    cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
+                    cout<<producto.codigo<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.stock<<"                    "<<producto.precio*producto.stock<<endl;
+                    cout << "--------------------------------------------------------------------------------------" << endl;
+                }
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            cout << "Cliente no encontrado" << endl;
+        }
+    }
+    else if (tipo == 'C') {
+        bool encontrado = false;
+        for (const auto& cliente : cliCO) {
+            if (cliente.codigo == codigo) {
+                cout << "Cliente encontrado"<< endl;
+                
+                for (Productos& producto : veProductos) {
+                    cout<<"                                Venta 001                               "<<endl;
+                    cout<<"Fecha 27/06/2023"<<endl;
+                    cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
+                    cout<<producto.codigo<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.stock<<"                    "<<producto.precio*producto.stock<<endl;
+                    cout << "--------------------------------------------------------------------------------------" << endl;
+                }
+                encontrado = true;
+                break;
+            }
+        }
+    
+        if (!encontrado) {
+            cout << "Cliente no encontrado" << endl;
+        }
+    }
+    else {
+        cout << "Tipo de cliente inválido" << endl;
+    }
+}
 
 void NuevosClientes() {
     string correo = "xyz", codigo = "004", nombre = "", telefono = "123", direccion = "", ruc = "321", dni = "123", categoria = "Y";
@@ -361,12 +417,12 @@ void MostrarVendedores() {
     for (Vendedores& vendedor : vendedores) {
         ofstream listavendedores("listvendedores.txt");
         listavendedores << "Correo: " << vendedor.correo << ", Codigo: " << vendedor.codigo << ", Nombre: " << vendedor.nombre << ", Telefono: " << vendedor.telefono << ", Salario: " << vendedor.salario << endl;
-        ifstream archivo2("listvendedores.txt)");
+        ifstream archivo2("listvendedores.txt");
         if(archivo2.is_open()){
-           string linea;
-           while(getline(archivo2,linea)){
-            cout << linea << endl;
-           }
+            string linea;
+            while (getline(archivo2, linea)) {
+                cout << linea << endl;
+            }
         }
         cout << endl;
     }
@@ -496,15 +552,6 @@ void MostrarProductos() {
     }
 }
 
-vector<Productos> buscarProductosPorCodigo(const string& codigo) {
-    vector<Productos> productosCompra;
-    for (auto& producto : veProductos) {
-        if (producto.codigo == codigo) {
-            productosCompra.push_back(producto);
-        }
-    }
-    return productosCompra;}
-
 void menu() {
     string opc = "0";
     while (opc != "8") {
@@ -545,36 +592,6 @@ void menu() {
             system("cls");
         } else if (opc == "5") { 
             cout << "Selecciono VENTAS" << endl;
-            string codigoBuscado;
-            float cantidadCompra, subtotal;
-            bool continuar = true;
-            while (continuar) {
-            cout<<"Ingrese el codigo del producto"<<endl;
-            cin>>codigoBuscado;
-            vector<Productos> productosCompra = buscarProductosPorCodigo(codigoBuscado);
-            if (!productosCompra.empty()) {
-            cout << "Producto a comprar encontrado:" << endl;
-            cout << "Ingrese la cantidad"<<endl;
-            cin>>cantidadCompra;
-            for (auto& producto : productosCompra) {
-            cout << "Ingrese la cantidad"<<endl;
-            cout<<producto.precio;
-            subtotal=cantidadCompra*producto.precio;
-                    cout<<"                                Venta                             "<<endl;
-                    cout<<"Fecha 27/06/2023"<<endl;
-                    cout<<"COD PRODUCTO                   CANTIDAD            PRECIO              SUBTOTAL"<<endl;
-                    cout<<producto.codigo<<" "<<producto.nombre<<"                  "<<cantidadCompra<<"                   "<<producto.precio<<"                    "<<subtotal<<endl;
-                    cout << "--------------------------------------------------------------------------------------" << endl;
-            }
-            } else {
-                cout << "No se encontraron productos con el código especificado." << endl;
-            }
-            char opcion;
-            cout << "¿Desea realizar otra compra? (s/n): "<<endl;
-            cin >> opcion;
-            if (opcion != 's' && opcion != 'S') {
-            continuar = false;
-            }}
             system("pause");
             system("cls");
         } else if (opc == "6") { 
@@ -591,6 +608,7 @@ void menu() {
             cout << "Saliendo del programa..." << endl;
             system("pause");
             system("cls");
+            break;
         } else {
             cout << "ERROR, Opción incorrecta. Ingresar una opción correcta: " << endl;
             system("pause");
@@ -636,6 +654,6 @@ int main() {
     veProductos.push_back(Producto2);
     veProductos.push_back(Producto3);
     veProductos.push_back(Producto4);
-    
+
     menu();
 }
