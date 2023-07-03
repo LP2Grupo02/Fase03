@@ -7,162 +7,189 @@
 using namespace std;
 
 class Personas {
-private:
-    int clave;
+    private:
+        int clave;
 
-protected:
-    string correo;
+    protected:
+        string correo;
 
-public:
-    string codigo;
-    string nombre;
-    string telefono;
+    public:
+        string codigo;
+        string nombre;
+        string telefono;
 
-    Personas(int cl, string co, string cd, string nm, string tl) {
-        this->clave = cl;
-        this->correo = co;
-        this->codigo = cd;
-        this->nombre = nm;
-        this->telefono = tl;
-    }
+        Personas(int cl, string co, string cd, string nm, string tl) {
+            this->clave = cl;
+            this->correo = co;
+            this->codigo = cd;
+            this->nombre = nm;
+            this->telefono = tl;
+        }
 
-    Personas(string co, string cd, string nm, string tl) {
-        this->correo = co;
-        this->codigo = cd;
-        this->nombre = nm;
-        this->telefono = tl;
-    }
+        Personas(string co, string cd, string nm, string tl) {
+            this->correo = co;
+            this->codigo = cd;
+            this->nombre = nm;
+            this->telefono = tl;
+        }
 };
 
 class Cliente : public Personas {
-public:
-    string direccion;
+    public:
+        string direccion;
 
-    Cliente(string co = " ", string cd = " ", string nm = " ", string tl = " ", string di = " ") : Personas(co, cd, nm, tl), direccion(di) {
-        this->direccion = di;
-    }
+        Cliente(string co = " ", string cd = " ", string nm = " ", string tl = " ", string di = " ") : Personas(co, cd, nm, tl), direccion(di) {
+            this->direccion = di;
+        }
 
-    friend void NuevosClientes();  // clases amigas tienen acceso a mienbros protejidos
-    friend void BuscarClientes();
+        friend void NuevosClientes();
+        friend void BuscarClientes();
 };
 
 class Clientesindividuales : public Cliente {
-public:
-    string categoria;
-    string DNI;
+    public:
+        string categoria;
+        string DNI;
 
-    Clientesindividuales(string co = "", string cd = "", string nm = "", string tl = "", string di = "", string _dni = "", string ct = "D") : Cliente(co, cd, nm, tl, di), DNI(_dni), categoria(ct) {}
+        Clientesindividuales(string co = "", string cd = "", string nm = "", string tl = "", string di = "", string _dni = "", string ct = "D") : Cliente(co, cd, nm, tl, di), DNI(_dni), categoria(ct) {}
 
-    int tasadescuento2(int monto) {
-        if (categoria == "D" or categoria == "C") {
-            cout << "Usted es un cliente de nivel bajo, no accede a descuento" << endl;
+        int tasadescuento(int monto, string categoria) {
+            if (categoria == "D" or categoria == "C") {
+                cout << "Usted es un cliente de nivel bajo, no accede a descuento" << endl;
+            }
+            else if (categoria == "A" or categoria == "B") {
+                cout << "Usted es un cliente de nivel alto, accede a descuento" << endl;
+                int predesc = monto - (monto * 3 / 100);
+                return predesc;
+            }
+            else {
+                cout << "Ingresó un dato erróneo" << endl;
+            }
+            return 0;
         }
-        else if (categoria == "A" or categoria == "B") {
-            cout << "Usted es un cliente de nivel alto, accede a descuento" << endl;
-            int predesc = monto - (monto * 3 / 100);
-            return predesc;
-        }
-        else {
-            cout << "Ingresó un dato erróneo" << endl;
-        }
-        return 0;
-    }
 
-    friend void NuevosClientes();  // tiene acceso a mienbros protejidos
-    friend void MostrarClientes();
+        friend void NuevosClientes();
+        friend void MostrarClientes();
 };
 
 class Clientescorporativos : public Cliente {
-public:
-    string ruc;    // prubeva de como añadir otro tipo de caraccter
+    public:
+        string ruc;
 
-    Clientescorporativos(string co = "", string cd = "", string nm = "", string tl = "", string di = "",  string _ruc = "") : Cliente(co, cd, nm, tl, di), ruc(_ruc) {
-        this->ruc = _ruc;
-    }
+        Clientescorporativos(string co = "", string cd = "", string nm = "", string tl = "", string di = "",  string _ruc = "") : Cliente(co, cd, nm, tl, di), ruc(_ruc) {
+            this->ruc = _ruc;
+        }
 
-    int tasadescuento2(int monto) {
-        int predesc = monto - (monto * 10 / 100);  
-        return predesc;
-    }
+        int tasadescuento(int monto) {
+            int predesc = monto - (monto * 10 / 100);
+            return predesc;
+        }
 
-    friend void MostrarClientes();
+        friend void MostrarClientes();
 };
 
 class Vendedores : public Personas {
-protected:
-    float salario;  // comprueva de ingreso de otro tipo de caracter
-public:
-    Vendedores(string correo = " ", string codigo = " ", string nombre = " ", string telefono = " ", float salario = 0.0) : Personas(correo, codigo, nombre, telefono), salario(salario) {
-        this->salario = salario;
-    }
-    friend void MostrarVendedores();
-};
-
-class Productos {        // nueva clase padre
-public:
-    string codigo;
-    string nombre;
-    string descripcion;
-    float precio;
-    string tipo;
-    int stock;
-
-    Productos(string codigo = "",string nombre = "", string descripcion = "", float precio = 0.0f, string tipo = "", int stock = 0) {
-        this->codigo = codigo;
-        this->nombre = nombre;
-        this->descripcion = descripcion;
-        this->precio = precio;
-        this->tipo = tipo;
-        this->stock = stock;
-    }
-};
-
-class Venta {   // clase generica donde incluye agregar y mostrar producto y venta
-private:
-    struct Producto {
-        string nombre;
-        float precio;
-        int cantidad;
-    };
-
-    vector<Producto> ventas;  // vector
-
-public:
-    void agregarProducto(const string& nombre, float precio, int cantidad) {
-        Producto producto;
-        producto.nombre = nombre;
-        producto.precio = precio;
-        producto.cantidad = cantidad;
-
-        ventas.push_back(producto);
-    }
-
-    void mostrarVentas() {
-        for (const auto& producto : ventas) {
-            cout<<"                                Venta 001                               "<<endl;
-            cout<<"Fecha 27/06/2023"<<endl;
-            cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
-            cout<<"001"<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.cantidad<<"                    "<<producto.precio*producto.cantidad<<endl;
-            cout << "--------------------------------------------------------------------------------------" << endl;
+    protected:
+        float salario;
+    public:
+        Vendedores(string correo = " ", string codigo = " ", string nombre = " ", string telefono = " ", float salario = 0.0) : Personas(correo, codigo, nombre, telefono), salario(salario) {
+            this->salario = salario;
         }
-    }
+        friend void MostrarVendedores();
 };
 
+class Productos {
+    public:
+        string codigo;
+        string nombre;
+        string descripcion;
+        float precio;
+        string tipo;
+        int stock;
+
+        Productos(string codigo = "",string nombre = "", string descripcion = "", float precio = 0.0f, string tipo = "", int stock = 0) {
+            this->codigo = codigo;
+            this->nombre = nombre;
+            this->descripcion = descripcion;
+            this->precio = precio;
+            this->tipo = tipo;
+            this->stock = stock;
+        }
+};
+
+vector<Productos> veProductos;
 vector<Clientescorporativos> cliCO;
 vector<Clientesindividuales> cliIN;
+
+void reporteVentas() {
+    string codigo;
+    char tipo;
+    cout << "              Reporte de ventas por Clientes             " << endl;
+    cout << "Ingrese el tipo de cliente a buscar (I/C): ";
+    cin >> tipo;
+    cout << "Ingrese el código del cliente: ";
+    cin >> codigo;
+
+    if (tipo == 'I') {
+        bool encontrado = false;
+        for (const auto& cliente : cliIN) {
+            if (cliente.codigo == codigo) {
+                cout << "Cliente encontrado"<< endl;
+
+                for (Productos& producto : veProductos) {
+                    cout<<"                                Venta 001                               "<<endl;
+                    cout<<"Fecha 27/06/2023"<<endl;
+                    cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
+                    cout<<producto.codigo<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.stock<<"                    "<<producto.precio*producto.stock<<endl;
+                    cout << "--------------------------------------------------------------------------------------" << endl;
+                }
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            cout << "Cliente no encontrado" << endl;
+        }
+    }
+    else if (tipo == 'C') {
+        bool encontrado = false;
+        for (const auto& cliente : cliCO) {
+            if (cliente.codigo == codigo) {
+                cout << "Cliente encontrado"<< endl;
+                
+                for (Productos& producto : veProductos) {
+                    cout<<"                                Venta 001                               "<<endl;
+                    cout<<"Fecha 27/06/2023"<<endl;
+                    cout<<"COD PRODUCTO             CANTIDAD            PRECIO              SUBTOTAL"<<endl;
+                    cout<<producto.codigo<<" "<<producto.nombre<<"              "<<producto.precio<<"               "<<producto.stock<<"                    "<<producto.precio*producto.stock<<endl;
+                    cout << "--------------------------------------------------------------------------------------" << endl;
+                }
+                encontrado = true;
+                break;
+            }
+        }
+    
+        if (!encontrado) {
+            cout << "Cliente no encontrado" << endl;
+        }
+    }
+    else {
+        cout << "Tipo de cliente inválido" << endl;
+    }
+    }
 
 void NuevosClientes() {
     string correo = "xyz", codigo = "004", nombre = "", telefono = "123", direccion = "", ruc = "321", dni = "123", categoria = "Y";
 
-    if ((cliCO.size() + cliIN.size()) >= 6) {   // size es el tamaño del vector
+    if ((cliCO.size() + cliIN.size()) >= 6) {
         cout << "Agenda llena. No se permiten más clientes." << endl;
         return;
     }
 
-    while (nombre.empty()) {    //  Empty es para comprovar que si esta lleno, o si esta vacio te da la opcion de pedir otro
+    while (nombre.empty()) {
         cout << "Ingrese el nombre del cliente: " << endl;
-        getline(cin, nombre);  // getline : lee lo que se encuentra en sus parametros 
-        if (nombre.empty()) {  // comprueva el dato dentro de la clase
+        getline(cin, nombre);
+        if (nombre.empty()) {
             cout << "Nombre inválido. Ingrese nuevamente: " << endl;
         }
     }
@@ -171,7 +198,8 @@ void NuevosClientes() {
     bool gmail = false;
     while (!hotmail && !gmail) {
         cout << "Ingrese el correo electrónico del cliente: " << endl;
-        getline(cin, correo);  // lee si esta correcto o falso
+        getline(cin, correo);
+
         if (correo.find("@hotmail.com") != string::npos) {
             hotmail = true;
         }
@@ -184,9 +212,9 @@ void NuevosClientes() {
         }
     }
 
-    while (telefono.length() != 9) { // el LENGTH se da la manipulacion de datos dentro de una lista de caracteres
+    while (telefono.length() != 9) {
         cout << "Ingrese el número de teléfono del cliente: " << endl;
-        getline(cin, telefono);   // lee y compara
+        getline(cin, telefono);
         if (telefono.length() != 9) {
             cout << "Teléfono inválido. Ingrese nuevamente: " << endl;
         }
@@ -226,7 +254,7 @@ void NuevosClientes() {
             cout << "Ingrese la dirección del cliente: ";
             getline(cin, direccion);
 
-            while (categoria != "A" && categoria != "B" && categoria != "C" && categoria != "D") {  // && se da un tipo de comparacion dentro de los parametros como AND
+            while (categoria != "A" && categoria != "B" && categoria != "C" && categoria != "D") {
                 cout << "Ingrese la categoría del cliente (A/B/C/D): ";
                 cin >> categoria;
                 cin.ignore();
@@ -235,9 +263,9 @@ void NuevosClientes() {
                 }
             }
 
-            int ultimoCodigoInt = stoi(cliIN[cliIN.size() - 1].codigo); // se da la asignacion de nuevo tipo de atributo 
-            ultimoCodigoInt++;  // contador de un ultimo codigo
-            codigo = to_string(ultimoCodigoInt); // devuelve una reprecentacion en string del parametro
+            int ultimoCodigoInt = stoi(cliIN[cliIN.size() - 1].codigo);
+            ultimoCodigoInt++;
+            codigo = to_string(ultimoCodigoInt);
 
             Clientesindividuales nuevoCliente(correo, codigo, nombre, telefono, dni, direccion, categoria);
             cliIN.push_back(nuevoCliente);
@@ -309,7 +337,7 @@ void BuscarClientes() {
     }
     else if (tipo == 'C') {
         bool encontrado = false;
-        for (const auto& cliente : cliCO) {  
+        for (const auto& cliente : cliCO) {
             if (cliente.codigo == codigo) {
                 cout << "Correo: " << cliente.correo << endl;
                 cout << "Código: " << cliente.codigo << endl;
@@ -344,7 +372,7 @@ void AgregarVendedor() {
             bool hotmail = false;
             bool gmail = false;
             while (!hotmail && !gmail) {
-                cout << "Ingrese el correo electronico del cliente: " << endl;
+                cout << "Ingrese el correo electrónico del cliente: " << endl;
                 getline(cin, correo);
 
                 if (correo.find("@hotmail.com") != string::npos) {
@@ -355,7 +383,7 @@ void AgregarVendedor() {
                 }
 
                 if (!hotmail && !gmail) {
-                    cout << "Correo invalido, no acepta solo numeros. Ingrese nuevamente: " << endl;
+                    cout << "Correo inválido. Ingrese nuevamente: " << endl;
                 }
             }
 
@@ -366,10 +394,10 @@ void AgregarVendedor() {
             cin >> nombre;
 
             while (telefono.length() != 9) {
-                cout << "Ingrese el numero de telefono del cliente: " << endl;
+                cout << "Ingrese el número de teléfono del cliente: " << endl;
                 getline(cin, telefono);
                 if (telefono.length() != 9) {
-                    cout << "Telefono invalido, acepta hasta 9 dijitos, no menos. Ingrese nuevamente: " << endl;
+                    cout << "Teléfono inválido. Ingrese nuevamente: " << endl;
                 }
             }
 
@@ -404,13 +432,13 @@ void MostrarClientes() {
     cout << "Lista de clientes:" << endl;
 
     cout << "Clientes individuales: " << endl;
-    for (Clientesindividuales& clI : cliIN) {   // realiza una referencia hacia el vector con el objeto creado
-        ofstream listaclientes("listclientesin.txt");  // Se abre el archivo en modo escritura
+    for (Clientesindividuales& clI : cliIN) {
+        ofstream listaclientes("listclientesin.txt");
         listaclientes << "Correo: " << clI.correo << ", Codigo: " << clI.codigo << ", Nombre: " << clI.nombre << ", Telefono: " << clI.telefono << ", Telefono: " << clI.telefono << ", DNI: " << clI.DNI << ", Direccion: " << clI.direccion << ", Categoria: " << clI.categoria << endl;
         ifstream archivo1("listclientesin.txt");
-        if (archivo1.is_open()) {    // Se abre el archivo en modo lectura
+        if (archivo1.is_open()) {
             string linea;
-            while (getline(archivo1, linea)) { // lee los datos escritos
+            while (getline(archivo1, linea)) {
                 cout << linea << endl;
             }
             archivo1.close();
@@ -434,11 +462,9 @@ void MostrarClientes() {
     }
 }
 
-vector<Productos> veProductos;
-
 void NuevoProducto() {
     string codigo = "", nombre = "", descripcion = "";
-    float precio = -1.0f;     // valores predeterminados antes de la designacion fija
+    float precio = -1.0f;
     string tipo = "";
     int stock = 7;
     while (codigo.length() != 3) {
@@ -456,7 +482,7 @@ void NuevoProducto() {
         }
     }    
     for (int i = 0; i < veProductos.size(); i++) {
-        if (veProductos[i].codigo == codigo or veProductos[i].nombre == nombre) {   //muestra productos escritos
+        if (veProductos[i].codigo == codigo or veProductos[i].nombre == nombre) {
             cout << "Ese producto ya existe." << endl;
             codigo = "";
             nombre = "";
@@ -465,7 +491,7 @@ void NuevoProducto() {
     while (codigo.length() != 3) {
         cout << "Ingrese el codigo del producto: " << endl;
         getline(cin, codigo);
-        if (codigo.length() != 3) {    // realiza la comparacion si es correcta o no
+        if (codigo.length() != 3) {
             cout << "Codigo invalido. Ingrese nuevamente: " << endl;
         }
     }
@@ -504,23 +530,23 @@ void NuevoProducto() {
             cout << "Ingreso un stock no valido, intentelo de nuevo: " << endl;
         }
     }
-    Productos nuevoProducto(codigo,nombre,descripcion,precio,tipo,stock); // constructor por defecto
-    veProductos.push_back(nuevoProducto);     // agrega objetos en la posision ultima del vector
+    Productos nuevoProducto(codigo,nombre,descripcion,precio,tipo,stock);
+    veProductos.push_back(nuevoProducto);
     cout << "Producto agregado correctamente." << endl;
 }
 
 void MostrarProductos() {
     cout << "Lista de productos:" << endl;
     for (Productos& producto : veProductos) {
-        ofstream listaproductos("listproduc.txt"); // Abrimos el archivo en modo escritura 
+        ofstream listaproductos("listproduc.txt");
         listaproductos << "Codigo: " << producto.codigo << ", Nombre: " << producto.nombre << ", Descripcion: " << producto.descripcion << ", Precio: " << producto.precio << ", Tipo: " << producto.tipo << ", Stock: " << producto.stock << endl;
-        ifstream archivo("listproduc.txt"); // Abrimos el archivo en modo lectura (ios::in)
+        ifstream archivo("listproduc.txt");
         if (archivo.is_open()) {
             string linea;
-            while (getline(archivo, linea)) {  //lee los elementos dentro del archivo
+            while (getline(archivo, linea)) {
                 cout << linea << endl;
             }
-            archivo.close();  // se sierra el archivo
+            archivo.close();
         }
         cout << endl;
     }
